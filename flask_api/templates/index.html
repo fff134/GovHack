@@ -50,10 +50,10 @@
           // Add the circle for this city to the map.
           if (citymap[city].metric < 0) {
             var color = '#000000';
-            r = Math.sqrt(-citymap[city].metric) * 100;
+            r = Math.sqrt(-citymap[city].metric) * 2;
           } else {
             var color = '#FF0000';
-            r = Math.sqrt(citymap[city].metric) * 100;
+            r = Math.sqrt(citymap[city].metric) * 2;
           }
 
           var cityCircle = new google.maps.Circle({
