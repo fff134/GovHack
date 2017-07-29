@@ -40,8 +40,7 @@ def suburb_metric_list():
     for num, suburb in enumerate(suburbs):
         dataPoint = {}
         dataPoint['suburb'] = suburb
-        dataPoint['lng'] = lng[num]
-        dataPoint['lat'] = lat[num]
+        dataPoint['center'] = {'lng': lng[num], 'lat': lat[num]}
         dataPoint['metric'] = str(metrics[num])
         finalResp.append(dataPoint)
 
