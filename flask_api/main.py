@@ -1,4 +1,4 @@
-from flask import request, url_for, jsonify
+from flask import request, url_for, jsonify, render_template
 from flask_api import FlaskAPI, status, exceptions
 from urllib.request import urlopen
 from urllib.error import URLError
@@ -12,7 +12,11 @@ cur = None
 
 app = FlaskAPI(__name__)
 
-@app.route("/", methods=['GET'])
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route("/metric", methods=['GET'])
 def suburb_metric_list():
     """
     List of metrics for each suburb
