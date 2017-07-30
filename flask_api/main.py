@@ -16,39 +16,43 @@ app = FlaskAPI(__name__)
 def index():
     return render_template('index.html')
 
-@app.route("/metric", methods=['GET'])
-def suburb_metric_list():
+@app.route("/metric/<year>", methods=['GET'])
+def suburb_metric_list(year):
     """
     List of metrics for each suburb
     """
-    suburbs = []
-    metrics = []
-    lat = []
-    lng = []
-    cur.execute("SELECT * FROM total_per_suburb_2016_metric")
-    for row in cur.fetchall():
-        suburbs.append(row[0])
-        metrics.append(row[1])
+    listOfValidYears = ['2011', '2013', '2016', '2021', '2026', '2031', '2036', '2041']
+    if year in listOfValidYears:
+        suburbs = []
+        metrics = []
+        lat = []
+        lng = []
+        cur.execute("SELECT * FROM total_per_suburb_" + year + "_metric")
+        for row in cur.fetchall():
+            suburbs.append(row[0])
+            metrics.append(row[1])
 
-        # get_location_lat_long(row[0])
-    for suburb in suburbs:
-        cur.execute("SELECT lat, lng FROM locations WHERE Suburb = '" + \
-        suburb + "'")
-        
-        location = cur.fetchall()
-        lat.append(location[0][0])
-        lng.append(location[0][1])
+            # get_location_lat_long(row[0])
+        for suburb in suburbs:
+            cur.execute("SELECT lat, lng FROM locations WHERE Suburb = '" + \
+            suburb + "'")
+            
+            location = cur.fetchall()
+            lat.append(location[0][0])
+            lng.append(location[0][1])
 
-    # Form JSON objects
-    finalResp = []
-    for num, suburb in enumerate(suburbs):
-        dataPoint = {}
-        dataPoint['suburb'] = suburb
-        dataPoint['center'] = {'lng': lng[num], 'lat': lat[num]}
-        dataPoint['metric'] = str(metrics[num])
-        finalResp.append(dataPoint)
+        # Form JSON objects
+        finalResp = []
+        for num, suburb in enumerate(suburbs):
+            dataPoint = {}
+            dataPoint['suburb'] = suburb
+            dataPoint['center'] = {'lng': lng[num], 'lat': lat[num]}
+            dataPoint['metric'] = str(metrics[num])
+            finalResp.append(dataPoint)
 
-    return jsonify(results = finalResp)
+        return jsonify(results = finalResp)
+    else:
+        raise InvalidUsage('Dataset for that year was not found', status_code=501)
 
 
 # def get_location_lat_long(location):

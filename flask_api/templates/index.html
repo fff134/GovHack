@@ -24,7 +24,7 @@
   <script>
 
     function loadDoc() {
-      $.get("/metric", 
+      $.get("/metric/2016", 
       function(data, status){
         var cityMap = data['results'];
         initMap(cityMap);
