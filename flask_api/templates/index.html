@@ -2,6 +2,7 @@
 <html>
 
 <head>
+  <meta charset="utf-8"/>
   <title>One</title>
 
   <style>
@@ -11,30 +12,61 @@
       left: 0;
       position: absolute;
       top: 0;
+      z-index: 1;
+    }
+
+    #year-control {
+      position: absolute;
+      bottom: 10%;
+      left: 5%;
+      z-index: 2;
+      width: 200px;
+      height: 100px;
+      background-color: #ffffff;
+      padding: 10px 10px;
+    }
+
+    #year-control > p > span {
+      background-color: #ffffff;
+    }
+
+    #slider {
+      z-index: 3;
     }
 </style>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ <script type="text/javascript" src="{{ url_for('static', filename='slider.js') }}"></script>
 
 </head>
 
 <body>
   <div id="map"></div>
+  <div id="year-control">
+    <div id="slider"></div>
+     <p>
+      <span>Year: </span>
+      <span id="year">2011</span>
+    </p> 
+  </div>
+</body>
+
   <script>
 
-    function loadDoc() {
-      $.get("/metric/2016", 
+    loadDoc('2011');
+
+    function loadDoc(year) {
+      $.get('/metric/' + year, 
       function(data, status){
         var cityMap = data['results'];
         initMap(cityMap);
       });
     }
 
-    loadDoc();
-
-
     function initMap(citymap) {
+      // Initiate the maps and zoom level
       var brisbaneCity = { lat: -27.4697707, lng: 153.0251235 };
       var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 11,
@@ -65,9 +97,11 @@
         }
       }
     }
+    
 </script>
 
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBViGdBCfpjz17jKVhNuC-f3VYeRjwjo2M"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5Tn1bfhWGrZy5PQbSFbiDFicDzSRGC-4"></script>
+
   
 
 </body>
